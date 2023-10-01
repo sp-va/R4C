@@ -39,12 +39,14 @@ def create_excel():
             sheet.cell(row=current_row, column=2, value=robot_version.version)
             sheet.cell(row=current_row, column=3, value=serial_count)
             current_row += 1
-        
-    if "Sheet" in workbook:
-            del workbook['Sheet']
 
-    new_report = CreatedReports.objects.create()
-    new_report.save()
-    workbook.save(filename=f'{MEDIA_ROOT}/reports/report.xls')
+    if len(workbook.sheetnames) > 1:
+        del workbook['Sheet']
+        new_report = CreatedReports.objects.create()
+        new_report.save()
+        workbook.save(filename=f'{MEDIA_ROOT}/reports/report.xls')
+    else:
+        workbook.save(filename=f'{MEDIA_ROOT}/reports/report.xls')
+
 
     
